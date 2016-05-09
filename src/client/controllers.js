@@ -4,12 +4,19 @@
   angular.module('myApp')
     .controller('myController', myController);
 
-  myController.$inject = ['NotificationService'];
+  myController.$inject = ['$scope', 'NotificationService', 'SocketService'];
 
-  function myController (NotificationService) {
+  function myController ($scope, NotificationService, SocketService) {
     var vm = this;
     NotificationService.get().then(function (notifications) {
       vm.notifications = notifications.data;
+    });
+
+    SocketService.forward('status', $scope);
+      $scope.$on('socket:status', function (ev, data) {
+      console.log('this is my controller: ', data)
+      // vm.last
+      // $scope.theData = data;
     });
 
     vm.markAsRead = markAsRead;

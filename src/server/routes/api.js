@@ -11,6 +11,7 @@ module.exports = router;
 ///////////////////////////
 
 function ping (req, res) {
+  global.io.emit('status', 'ok')
   res.status(200).json({ message: 'pong!' });
 };
 
@@ -42,6 +43,7 @@ function read (req, res) {
     return notification.save();
   })
   .then(function (notification) {
+    global.io.emit('status', notification.read)
     res.status(200).json(notification);
   })
   .catch(function (notification) {
